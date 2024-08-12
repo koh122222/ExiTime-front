@@ -8,11 +8,10 @@ export function register({ email, password }) {
     );
 }
 
-export function login({ email, password }) {
+export function signIn( login, password ) {
     return client.post(
         "/login",
-        { email, password },
-        { authorization: false }
+        { login: login, password: password }
     );
 }
 

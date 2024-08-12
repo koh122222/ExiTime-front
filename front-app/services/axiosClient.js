@@ -1,5 +1,5 @@
 import { createAxiosClient } from "./createAxiosClient";
-import { useAuthStore } from "../src/stores/authStore";
+import { useAuthStore } from "../stores/authStore";
 
 const REFRESH_TOKEN_URL = 'http://62.205.183.86:8182/api/v1/auth/refreshToken'
 const BASE_URL = 'http://62.205.183.86:8182/api'
@@ -17,13 +17,13 @@ function getCurrentRefreshToken() {
 
 function setRefreshTokens(tokens){
     console.log('set refresh tokens...')
-    const login = useAuthStore.getState().login
+    const login = useAuthStore.getState().setTokens
     login(tokens)
 }
 
 async function logout(){
     console.log('logout...')
-    const logout = useAuthStore.getState().logout
+    const logout = useAuthStore.getState().removeTokens
     logout()
 }
 

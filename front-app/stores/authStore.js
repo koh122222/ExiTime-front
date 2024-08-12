@@ -1,5 +1,6 @@
-import create from "zustand";
+import {create} from "zustand";
 
+const _this = this
 function setTokensToLocalStorage({ accessToken, refreshToken }) {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
@@ -11,10 +12,8 @@ function removeTokensFromLocalStorage() {
 }
 
 export const useAuthStore = create((set, get) => ({
-    accessToken: localStorage.getItem("accessToken") || null,
-    refreshToken: localStorage.getItem("refreshToken") || null,
     isLoggedIn: () => !!get().accessToken,
-    login: (tokens) => {
+    setTokens: (tokens) => {
         setTokensToLocalStorage(tokens);
         set((state) => ({
             ...state,
@@ -22,7 +21,7 @@ export const useAuthStore = create((set, get) => ({
             refreshToken: tokens.refreshToken,
         }));
     },
-    logout: () => {
+    removeTokens: () => {
         removeTokensFromLocalStorage();
         set((state) => ({
             ...state,

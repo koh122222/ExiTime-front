@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {head} from "axios";
 
 let failedQueue = [];
 let isRefreshing = false;
@@ -47,11 +47,12 @@ export function createAxiosClient({
             return response;
         },
         (error) => {
-            const originalRequest = error.config;
+            const originalRequest = {...error.config};
             // In "axios": "^1.1.3" there is an issue with headers, and this is the workaround.
-            originalRequest.headers = JSON.parse(
-                JSON.stringify(originalRequest.headers || {})
-            );
+            const headers = JSON.parse(
+                JSON.stringify(originalRequest || {})
+            ).headers;
+            originalRequest.headers = headers ? headers : {}
             const refreshToken = getCurrentRefreshToken();
 
             // If error, process all the requests in the queue and logout the user.
