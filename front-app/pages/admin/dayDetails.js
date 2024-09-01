@@ -2,16 +2,16 @@ import React, {useEffect, useState} from "react";
 
 // components
 
-import CardTable from "components/Cards/CardTable.js";
+import DayDetailsCardTable from "components/Cards/DayDetailsCardTable.js";
 
 // layout for page
 
 import Admin from "layouts/Admin.js";
-import {getUserSessions} from "../../services/services";
 import {useSessionsStore} from "../../stores/sessionsStore";
 import {useFiltersStore} from "../../stores/filtersStore";
+import {getUserSessions} from "../../services/services";
 
-export default function Tables() {
+export default function DayDetails() {
 
   const {sessions, setSessions} = useSessionsStore.getState()
   const {startDate, endDate} = useFiltersStore.getState()
@@ -40,16 +40,16 @@ export default function Tables() {
 
   return (
     <>
-      {!isLoading ? <div className="flex flex-wrap mt-4">
+      <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 px-4">
-          <CardTable/>
+          <DayDetailsCardTable />
         </div>
         <div className="w-full mb-12 px-4">
-          <CardTable color="dark"/>
+          <DayDetailsCardTable color="dark" />
         </div>
-      </div> : "loading..."}
+      </div>
     </>
   );
 }
 
-Tables.layout = Admin;
+DayDetails.layout = Admin;

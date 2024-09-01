@@ -35,6 +35,6 @@ export function getApplications() {
     return client.get("/applications");
 }
 
-export function getUserSessions() {
-    return client.get("/user_sessions");
+export function getUserSessions(startDate, endDate) {
+    return client.get(`/users_sessions?start_date=${startDate}&end_date=${endDate}`);
 }

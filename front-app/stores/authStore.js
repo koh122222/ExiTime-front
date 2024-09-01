@@ -1,6 +1,5 @@
 import {create} from "zustand";
 
-const _this = this
 function setTokensToLocalStorage({ accessToken, refreshToken }) {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
@@ -12,6 +11,8 @@ function removeTokensFromLocalStorage() {
 }
 
 export const useAuthStore = create((set, get) => ({
+    accessToken: "",
+    refreshToken: "",
     isLoggedIn: () => !!get().accessToken,
     setTokens: (tokens) => {
         setTokensToLocalStorage(tokens);

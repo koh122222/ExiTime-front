@@ -27,7 +27,7 @@ export default function Login() {
   const onSignIn = () => {
     signIn(login, pwd)
         .then((response) => {
-          setTokens({accessToken: response.token, refreshToken: ''})
+          setTokens({accessToken: response.data.token, refreshToken: ''})
           router.push("../../admin/dashboard")
         })
   }

@@ -1,37 +1,55 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 // components
 
-import CardLineChart from "components/Cards/CardLineChart.js";
-import CardBarChart from "components/Cards/CardBarChart.js";
-import CardPageVisits from "components/Cards/CardPageVisits.js";
-import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
+import CardTable from "components/Cards/CardTable.js";
 
 // layout for page
 
 import Admin from "layouts/Admin.js";
+import {getUserSessions} from "../../services/services";
+import {useSessionsStore} from "../../stores/sessionsStore";
+import {useFiltersStore} from "../../stores/filtersStore";
 
-export default function Dashboard() {
-  return (
-    <>
-      <div className="flex flex-wrap">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardLineChart />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardBarChart />
-        </div>
-      </div>
-      <div className="flex flex-wrap mt-4">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardPageVisits />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardSocialTraffic />
-        </div>
-      </div>
-    </>
-  );
+export default function Tables() {
+
+    const {sessions, setSessions} = useSessionsStore.getState()
+    const {startDate, endDate} = useFiltersStore.getState()
+
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        if(!sessions) {
+            setIsLoading(true)
+            getUserSessions(startDate, endDate)
+                .then((response) => {
+                    setSessions(response.data)
+                    setIsLoading(false)
+                })
+        }
+    },[])
+
+    useEffect(() => {
+        setIsLoading(true)
+        getUserSessions(startDate, endDate)
+            .then((response) => {
+                setSessions(response.data)
+                setIsLoading(false)
+            })
+    },[startDate, endDate])
+
+    return (
+        <>
+            {!isLoading ? <div className="flex flex-wrap mt-4">
+                <div className="w-full mb-12 px-4">
+                    <CardTable/>
+                </div>
+                <div className="w-full mb-12 px-4">
+                    <CardTable color="dark"/>
+                </div>
+            </div> : "loading..."}
+        </>
+    );
 }
 
-Dashboard.layout = Admin;
+Tables.layout = Admin;
