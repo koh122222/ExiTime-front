@@ -1,0 +1,53 @@
+{
+  "name": "notus-nextjs",
+  "version": "0.0.1",
+  "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fortawesome/fontawesome-free": "6.0.0",
+    "@material-tailwind/react": "^2.1.9",
+    "@mui/icons-material": "^6.0.1",
+    "@mui/material": "^6.0.1",
+    "@popperjs/core": "2.11.7",
+    "@tailwindcss/forms": "0.5.3",
+    "axios": "^1.7.3",
+    "chart.js": "4.3.0",
+    "gulp": "4.0.2",
+    "gulp-append-prepend": "1.0.9",
+    "next": "13.4.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "tailwindcss": "3.3.2",
+    "zustand": "^4.5.4"
+  },
+  "scripts": {
+    "start": "next start",
+    "build": "next build",
+    "dev": "next dev",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run build:tailwind && npm run dev",
+    "build:tailwind": "tailwind build styles/index.css -o styles/tailwind.css"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "optionalDependencies": {
+    "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.14",
+    "postcss": "8.4.22"
+  }
+}
