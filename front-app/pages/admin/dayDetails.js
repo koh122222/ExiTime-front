@@ -13,15 +13,32 @@ import {getUserSessions} from "../../services/services";
 
 export default function DayDetails() {
 
-  const {sessions, setSessions} = useSessionsStore.getState()
-  const {startDate, endDate} = useFiltersStore.getState()
+    const [sessions, setSessions] = useSessionsStore((state) => [state.sessions, state.setSessions])
 
-  const [isLoading, setIsLoading] = useState(false)
+    useEffect(() => {
+        const unsibscribe = useSessionsStore.subscribe((state) => {
+            console.info(state)
+        })
+
+        return () => {unsibscribe()}
+    }, [])
+
+    const [startDay, endDay] = useFiltersStore((state) => [state.startDay, state.endDay])
+
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const unsibscribe = useFiltersStore.subscribe((state) => {
+            console.info(state)
+        })
+
+        return () => {unsibscribe()}
+    }, [])
 
   useEffect(() => {
     if(!sessions) {
       setIsLoading((prev) => !prev)
-      getUserSessions(startDate, endDate)
+      getUserSessions(startDay, endDay)
           .then((response) => {
             setSessions(response.data)
             setIsLoading(prevState => !prevState)
@@ -31,12 +48,12 @@ export default function DayDetails() {
 
   useEffect(() => {
     setIsLoading((prev) => !prev)
-    getUserSessions(startDate, endDate)
+    getUserSessions(startDay, endDay)
         .then((response) => {
           setSessions(response.data)
           setIsLoading(prevState => !prevState)
         })
-  },[startDate, endDate])
+  },[startDay, endDay])
 
   return (
     <>

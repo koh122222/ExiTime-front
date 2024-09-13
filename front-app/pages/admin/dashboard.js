@@ -13,10 +13,27 @@ import {useFiltersStore} from "../../stores/filtersStore";
 
 export default function Tables() {
 
-    const {sessions, setSessions} = useSessionsStore.getState()
-    const {startDate, endDate} = useFiltersStore.getState()
+    const [sessions, setSessions] = useSessionsStore((state) => [state.sessions, state.setSessions])
+
+    useEffect(() => {
+        const unsibscribe = useSessionsStore.subscribe((state) => {
+            console.info(state)
+        })
+
+        return () => {unsibscribe()}
+    }, [])
+
+    const [startDate, endDate] = useFiltersStore((state) => [state.startDate, state.endDate])
 
     const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const unsibscribe = useFiltersStore.subscribe((state) => {
+            console.info(state)
+        })
+
+        return () => {unsibscribe()}
+    }, [])
 
     useEffect(() => {
         if(!sessions) {

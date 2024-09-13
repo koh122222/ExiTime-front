@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 
 // components
@@ -10,7 +10,15 @@ import {ArrowDropDown} from "@mui/icons-material";
 
 export default function CardTable({ color }) {
 
-  const {sessions} = useSessionsStore.getState()
+  const [sessions] = useSessionsStore((state) => [state.sessions])
+
+  useEffect(() => {
+    const unsibscribe = useSessionsStore.subscribe((state) => state)
+
+    return () => {unsibscribe()}
+  }, [])
+
+
 
   const calculatePercent = (total, part) => {
     return (part / total) * 100
@@ -38,7 +46,7 @@ export default function CardTable({ color }) {
             </div>
           </div>
         </div>
-        {sessions.departments.map(department =>
+        {sessions?.departments?.map(department =>
             <Accordion>
               <AccordionSummary
                   expandIcon={<ArrowDropDown />}
@@ -151,7 +159,7 @@ export default function CardTable({ color }) {
                     </tr>
                     </thead>
                     <tbody>
-                    {department["small_users_info"].map(user =>
+                    {department["small_users_info"]?.map(user =>
                         <tr key={user.id}>
                           <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-normal-wrap p-4 max-w-120-px text-left">
                                   <span
