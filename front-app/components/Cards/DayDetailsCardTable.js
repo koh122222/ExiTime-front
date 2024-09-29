@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
 // components
@@ -7,6 +7,7 @@ import {useSessionsStore} from "../../stores/sessionsStore";
 import {Accordion, AccordionDetails, AccordionSummary, Grid2, IconButton, Typography} from "@mui/material";
 import {ArrowDropDown} from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
+import DayDetailsDrawer from "components/Drawers/DayDetailsDrawer";
 export default function DayDetailsCardTable({ color }) {
 
   const [sessions] = useSessionsStore((state) => [state.sessions])
@@ -27,6 +28,9 @@ export default function DayDetailsCardTable({ color }) {
     const secondsRemaining = seconds % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`;
   }
+
+  const [open, setOpen] = useState(false)
+  const [detailsSession, setdetailsSession] = useState({})
 
   return (
       <>
@@ -153,7 +157,7 @@ export default function DayDetailsCardTable({ color }) {
                                           : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                   }
                               >
-                                  ОТВЛЕЧЕНИЯ
+                                  Начало сессии
                               </th>
                               <th
                                   className={
@@ -163,7 +167,7 @@ export default function DayDetailsCardTable({ color }) {
                                           : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                   }
                               >
-                                  ПРОДУКТИВНОЕ
+                                  Конец сессии
                               </th>
                               <th
                                   className={
@@ -211,7 +215,8 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {formatSeconds(session["idle_length"])}
+                                    {/* {formatSeconds(session["idle_length"])} */}
+                                    {new Date(session.start).toLocaleString()}
                                   </span>
                                   </td>
                                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs w-1/12 whitespace-nowrap p-4">
@@ -221,13 +226,19 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {formatSeconds(session["length"])}
+                                    {/* {formatSeconds(session["length"])} */}
+                                    {new Date(session.start).toLocaleString()}
                                   </span>
                                   </td>
                                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-1/12 text-xs whitespace-nowrap p-4 text-right">
-                                      <IconButton>
-                                          <SearchIcon/>
+                                      <IconButton onClick={() => {
+                                            setOpen(true)
+                                            setdetailsSession(session)
+                                          }
+                                        }>
+                                          <SearchIcon />
                                       </IconButton>
+                                      
                                   </td>
                               </tr>
                           )}
@@ -240,6 +251,12 @@ export default function DayDetailsCardTable({ color }) {
               </Accordion>
           )}
         </div>
+        <DayDetailsDrawer
+          open={open}
+          session={detailsSession}
+          onClose={() => setOpen(false)}
+          formatSeconds={formatSeconds}
+        />
       </>
   );
 }
