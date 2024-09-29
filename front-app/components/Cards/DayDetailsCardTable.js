@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 
 // components
@@ -9,10 +9,23 @@ import {ArrowDropDown} from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
 export default function DayDetailsCardTable({ color }) {
 
-  const {sessions} = useSessionsStore.getState()
+  const [sessions] = useSessionsStore((state) => [state.sessions])
+
+  useEffect(() => {
+    const unsibscribe = useSessionsStore.subscribe((state) => state)
+
+    return () => {unsibscribe()}
+  }, [])
 
   const calculatePercent = (total, part) => {
     return !isNaN(part/total) ? (part / total) * 100 : 0
+  }
+
+  const formatSeconds = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secondsRemaining = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`;
   }
 
   return (
@@ -79,7 +92,7 @@ export default function DayDetailsCardTable({ color }) {
                                   +(color === "light" ? "text-blueGray-600" : "text-white")
                               }
                           >
-                            {`${user["total_idle"] + user["total_length"]}`}
+                            {formatSeconds(user["total_idle"] + user["total_length"])}
                           </span>
                             <div className="relative pt-1">
                               <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blueGray-200">
@@ -95,7 +108,7 @@ export default function DayDetailsCardTable({ color }) {
                                   +(color === "light" ? "text-blueGray-600" : "text-white")
                               }
                           >
-                            ОТВЛЕЧЕНИЯ: {`${user["total_idle"]}`}
+                            ОТВЛЕЧЕНИЯ: {formatSeconds(user["total_idle"])}
                           </span>
                           </Grid2>
                           <Grid2 display="flex" justifyContent="center" alignItems="center" size={2}>
@@ -105,7 +118,7 @@ export default function DayDetailsCardTable({ color }) {
                                   +(color === "light" ? "text-blueGray-600" : "text-white")
                               }
                           >
-                            ПРОДУКТИВНОЕ: {`${user["total_length"]}`}
+                            ПРОДУКТИВНОЕ: {formatSeconds(user["total_length"])}
                           </span>
                           </Grid2>
                         </Grid2>
@@ -182,7 +195,7 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${session["idle_length"] + session["length"]}`}
+                                    {formatSeconds(session["idle_length"] + session["length"])}
                               </span>
                                       <div className="relative pt-1">
                                           <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blueGray-200">
@@ -198,7 +211,7 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${session["idle_length"]}`}
+                                    {formatSeconds(session["idle_length"])}
                                   </span>
                                   </td>
                                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs w-1/12 whitespace-nowrap p-4">
@@ -208,7 +221,7 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${session["length"]}`}
+                                    {formatSeconds(session["length"])}
                                   </span>
                                   </td>
                                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-1/12 text-xs whitespace-nowrap p-4 text-right">

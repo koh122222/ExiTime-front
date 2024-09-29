@@ -24,6 +24,13 @@ export default function CardTable({ color }) {
     return (part / total) * 100
   }
 
+  const formatSeconds = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secondsRemaining = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`;
+  }
+
   return (
     <>
       <div
@@ -60,7 +67,7 @@ export default function CardTable({ color }) {
                   <Grid2 display="flex" justifyContent="left" alignItems="center" size={1.5}>
                     <span
                         className={
-                            "ml-3 font-semibold " +
+                            "font-semibold " +
                             +(color === "light" ? "text-blueGray-600" : "text-white")
                         }
                     >
@@ -74,7 +81,7 @@ export default function CardTable({ color }) {
                             +(color === "light" ? "text-blueGray-600" : "text-white")
                         }
                     >
-                      {`${department["total_idle"] + department["total_length"]}`}
+                      {formatSeconds(department["total_idle"] + department["total_length"])}
                     </span>
                     <div className="relative pt-1">
                       <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blueGray-200">
@@ -90,7 +97,7 @@ export default function CardTable({ color }) {
                             +(color === "light" ? "text-blueGray-600" : "text-white")
                         }
                     >
-                      ОТВЛЕЧЕНИЯ: {`${department["total_idle"]}`}
+                      ОТВЛЕЧЕНИЯ: {formatSeconds(department["total_idle"])}
                     </span>
                   </Grid2>
                   <Grid2 display="flex" justifyContent="center" alignItems="center" size={2}>
@@ -100,7 +107,7 @@ export default function CardTable({ color }) {
                             +(color === "light" ? "text-blueGray-600" : "text-white")
                         }
                     >
-                      ПРОДУКТИВНОЕ: {`${department["total_length"]}`}
+                      ПРОДУКТИВНОЕ: {formatSeconds(department["total_length"])}
                     </span>
                   </Grid2>
                 </Grid2>
@@ -178,7 +185,7 @@ export default function CardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${user["total_idle"] + user["total_length"]}`}
+                                    {formatSeconds(user["total_idle"] + user["total_length"])}
                               </span>
                             <div className="relative pt-1">
                               <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blueGray-200">
@@ -194,7 +201,7 @@ export default function CardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${user["total_idle"]}`}
+                                    {formatSeconds(user["total_idle"])}
                                   </span>
                           </td>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs w-1/12 whitespace-nowrap p-4">
@@ -204,7 +211,7 @@ export default function CardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${user["total_length"]}`}
+                                    {formatSeconds(user["total_length"])}
                                   </span>
                           </td>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-1/12 text-xs whitespace-nowrap p-4 text-right">
