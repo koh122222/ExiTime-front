@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
 // components
@@ -7,13 +7,30 @@ import {useSessionsStore} from "../../stores/sessionsStore";
 import {Accordion, AccordionDetails, AccordionSummary, Grid2, IconButton, Typography} from "@mui/material";
 import {ArrowDropDown} from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
+import DayDetailsDrawer from "components/Drawers/DayDetailsDrawer";
 export default function DayDetailsCardTable({ color }) {
 
-  const {sessions} = useSessionsStore.getState()
+  const [sessions] = useSessionsStore((state) => [state.sessions])
+
+  useEffect(() => {
+    const unsibscribe = useSessionsStore.subscribe((state) => state)
+
+    return () => {unsibscribe()}
+  }, [])
 
   const calculatePercent = (total, part) => {
     return !isNaN(part/total) ? (part / total) * 100 : 0
   }
+
+  const formatSeconds = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secondsRemaining = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`;
+  }
+
+  const [open, setOpen] = useState(false)
+  const [detailsSession, setdetailsSession] = useState({})
 
   return (
       <>
@@ -23,20 +40,6 @@ export default function DayDetailsCardTable({ color }) {
                 (color === "light" ? "bg-white" : "bg-blueGray-700 text-white")
             }
         >
-          <div className="rounded-t mb-0 px-4 py-3 border-0">
-            <div className="flex flex-wrap items-center">
-              <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                <h3
-                    className={
-                        "font-semibold text-lg " +
-                        (color === "light" ? "text-blueGray-700" : "text-white")
-                    }
-                >
-                  Card Tables
-                </h3>
-              </div>
-            </div>
-          </div>
           {sessions.departments.map(department =>
               <Accordion>
                 <AccordionSummary
@@ -79,7 +82,7 @@ export default function DayDetailsCardTable({ color }) {
                                   +(color === "light" ? "text-blueGray-600" : "text-white")
                               }
                           >
-                            {`${user["total_idle"] + user["total_length"]}`}
+                            {formatSeconds(user["total_idle"] + user["total_length"])}
                           </span>
                             <div className="relative pt-1">
                               <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blueGray-200">
@@ -95,7 +98,7 @@ export default function DayDetailsCardTable({ color }) {
                                   +(color === "light" ? "text-blueGray-600" : "text-white")
                               }
                           >
-                            ОТВЛЕЧЕНИЯ: {`${user["total_idle"]}`}
+                            ОТВЛЕЧЕНИЯ: {formatSeconds(user["total_idle"])}
                           </span>
                           </Grid2>
                           <Grid2 display="flex" justifyContent="center" alignItems="center" size={2}>
@@ -105,7 +108,7 @@ export default function DayDetailsCardTable({ color }) {
                                   +(color === "light" ? "text-blueGray-600" : "text-white")
                               }
                           >
-                            ПРОДУКТИВНОЕ: {`${user["total_length"]}`}
+                            ПРОДУКТИВНОЕ: {formatSeconds(user["total_length"])}
                           </span>
                           </Grid2>
                         </Grid2>
@@ -140,7 +143,7 @@ export default function DayDetailsCardTable({ color }) {
                                           : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                   }
                               >
-                                  ОТВЛЕЧЕНИЯ
+                                  Начало сессии
                               </th>
                               <th
                                   className={
@@ -150,7 +153,7 @@ export default function DayDetailsCardTable({ color }) {
                                           : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                   }
                               >
-                                  ПРОДУКТИВНОЕ
+                                  Конец сессии
                               </th>
                               <th
                                   className={
@@ -182,7 +185,7 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${session["idle_length"] + session["length"]}`}
+                                    {formatSeconds(session["idle_length"] + session["length"])}
                               </span>
                                       <div className="relative pt-1">
                                           <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blueGray-200">
@@ -198,7 +201,8 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${session["idle_length"]}`}
+                                    {/* {formatSeconds(session["idle_length"])} */}
+                                    {new Date(session.start).toLocaleString()}
                                   </span>
                                   </td>
                                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs w-1/12 whitespace-nowrap p-4">
@@ -208,13 +212,19 @@ export default function DayDetailsCardTable({ color }) {
                                     +(color === "light" ? "text-blueGray-600" : "text-white")
                                 }
                             >
-                                    {`${session["length"]}`}
+                                    {/* {formatSeconds(session["length"])} */}
+                                    {new Date(session.start).toLocaleString()}
                                   </span>
                                   </td>
                                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-1/12 text-xs whitespace-nowrap p-4 text-right">
-                                      <IconButton>
-                                          <SearchIcon/>
+                                      <IconButton onClick={() => {
+                                            setOpen(true)
+                                            setdetailsSession(session)
+                                          }
+                                        }>
+                                          <SearchIcon />
                                       </IconButton>
+                                      
                                   </td>
                               </tr>
                           )}
@@ -227,6 +237,12 @@ export default function DayDetailsCardTable({ color }) {
               </Accordion>
           )}
         </div>
+        <DayDetailsDrawer
+          open={open}
+          session={detailsSession}
+          onClose={() => setOpen(false)}
+          formatSeconds={formatSeconds}
+        />
       </>
   );
 }

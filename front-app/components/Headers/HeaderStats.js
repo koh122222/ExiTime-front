@@ -21,7 +21,7 @@ export default function HeaderStats(sessions) {
                   statArrow="up"
                   statPercent="3.48"
                   statPercentColor="text-emerald-500"
-                  statDescripiron="Since last month"
+                  statDescripiron="С предыдущего месяца"
                   statIconName="far fa-chart-bar"
                   statIconColor="bg-red-500"
                 />
@@ -33,7 +33,7 @@ export default function HeaderStats(sessions) {
                   statArrow="down"
                   statPercent="3.48"
                   statPercentColor="text-red-500"
-                  statDescripiron="Since last week"
+                  statDescripiron="С предыдущей недели"
                   statIconName="fas fa-chart-pie"
                   statIconColor="bg-orange-500"
                 />
@@ -45,7 +45,7 @@ export default function HeaderStats(sessions) {
                   statArrow="down"
                   statPercent="1.10"
                   statPercentColor="text-orange-500"
-                  statDescripiron="Since yesterday"
+                  statDescripiron="Со вчерашнего дня"
                   statIconName="fas fa-users"
                   statIconColor="bg-pink-500"
                 />
