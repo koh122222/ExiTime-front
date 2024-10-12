@@ -41,7 +41,7 @@ export default function Login() {
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <div className="text-blueGray-400 text-center mb-3 mt-5 font-bold">
-                  Sign in
+                  Войти
                 </div>
                 <form>
                   <div className="relative w-full mb-3">
@@ -49,12 +49,12 @@ export default function Login() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Email
+                      Имя пользователя
                     </label>
                     <input
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Email"
+                      placeholder="Имя пользователя"
                       onChange={(e) => onLoginChange(e.target.value)}
                     />
                   </div>
@@ -64,12 +64,12 @@ export default function Login() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Password
+                      Пароль
                     </label>
                     <input
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Password"
+                      placeholder="Пароль"
                       onChange={(e) => onPwdChange(e.target.value)}
                     />
                   </div>
@@ -81,7 +81,7 @@ export default function Login() {
                         className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
                       />
                       <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                        Remember me
+                        Запомнить меня?
                       </span>
                     </label>
                   </div>
@@ -92,7 +92,7 @@ export default function Login() {
                       type="button"
                       onClick={() => onSignIn(login, pwd)}
                     >
-                      Sign In
+                      Войти
                     </button>
                   </div>
                 </form>
@@ -105,7 +105,7 @@ export default function Login() {
                   onClick={(e) => e.preventDefault()}
                   className="text-blueGray-200"
                 >
-                  <small>Forgot password?</small>
+                  <small>Забыли пароль?</small>
                 </a>
               </div>
             </div>
