@@ -26,7 +26,7 @@ export default function Navbar() {
           <p
             className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
           >
-            Dashboard
+            Фильтры: 
           </p>
           <IconButton onClick={toggle}>
             <EditCalendarIcon/>
@@ -39,7 +39,7 @@ export default function Navbar() {
               </span>
               <input
                 type="text"
-                placeholder="Search here..."
+                placeholder="Введите запрос..."
                 className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
               />
             </div>

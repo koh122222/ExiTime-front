@@ -1,8 +1,8 @@
 import { createAxiosClient } from "./createAxiosClient";
 import { useAuthStore } from "../stores/authStore";
 
-const REFRESH_TOKEN_URL = 'http://87.228.26.241:8182/api/v1/auth/refreshToken'
-const BASE_URL = 'http://87.228.26.241:8182/api/v1'
+const REFRESH_TOKEN_URL = 'http://62.205.183.86:8182/api/v1/auth/refreshToken'
+const BASE_URL = 'http://62.205.183.86:8182/api/v1'
 
 function getCurrentAccessToken() {
     // this is how you access the zustand store outside of React.
