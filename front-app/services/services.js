@@ -38,3 +38,11 @@ export function getApplications() {
 export function getUserSessions(startDate, endDate) {
     return client.get(`/users_sessions?start_date=${startDate}&end_date=${endDate}`);
 }
+
+export function setApplicationSynonim(appId, synonim) {
+    return client.patch(`/admin/application_synonym/${appId}?synonym=${synonim}`);
+}
+
+export function setApplicationCategory(appId, category) {
+    return client.patch(`/admin/application_category/${appId}?category_name=${category}`);
+}
