@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
+import {useApplicationsStore} from "../../stores/applicationsStore";
+import {IconButton} from "@mui/material";
+import Button from '@mui/material/Button';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 // components
 
-export default function CardSettings(color="light", apps) {
+export default function CardSettings(color="light") {
+
+  const [applications] = useApplicationsStore((state) => [state.applications])
+
+  useEffect(() => {
+    const unsibscribe = useApplicationsStore.subscribe((state) => state)
+
+    return () => {unsibscribe()}
+  }, [])
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
     <div
@@ -65,25 +93,69 @@ export default function CardSettings(color="light", apps) {
                     </tr>
                     </thead>
                     <tbody>
-                      {apps?.map(
+                      {applications?.map(
                         (app) => (
-                          <tr>
-                            <td>
+                          <tr key={app.id}>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-6/12 text-xs whitespace-nowrap p-4 ">
                               {app?.name}
                             </td>
-                            <td>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-6/12 text-xs whitespace-nowrap p-4 ">
                               {app?.synonym}
                             </td>
-                            <td>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-6/12 text-xs whitespace-nowrap p-4 ">
                               {app?.category?.name}
+                            </td>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-1/12 text-xs whitespace-nowrap p-4 text-right">
+                            <IconButton onClick={() => {
+                                            handleClickOpen()
+                                          }
+                                        }>
+                                          <ModeEditIcon />
+                                      </IconButton>
                             </td>
                           </tr>
                         )
                       )}
-                      
                     </tbody>
       </table>
       </div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          component: 'form',
+          onSubmit: (event) => {
+            handleClose();
+          },
+        }}
+      >
+        <DialogTitle>Изменить приложение</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="synonim"
+            name="synonim"
+            label="Синоним"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            id="category"
+            name="category"
+            label="Категория"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Отменить</Button>
+          <Button>Сохранить</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

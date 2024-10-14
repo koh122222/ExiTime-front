@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useApplicationsStore} from "../../stores/applicationsStore";
 
 // components
 
@@ -11,24 +12,37 @@ import { getApplications } from "services/services";
 
 export default function Settings() {
 
-  const [applications, setApplications] = useState([])
+  const [applications, setApplications] = useApplicationsStore((state) => [state.applications, state.setApplications])
+
+    useEffect(() => {
+        const unsibscribe = useApplicationsStore.subscribe((state) => {
+            console.info(state)
+        })
+
+        return () => {unsibscribe()}
+    }, [])
+
+    const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    setIsLoading(true)
     getApplications()
-    .then((data) => {
-      setApplications(data?.data?.applications)
-      console.info(data)
-      console.info(applications)
+    .then((response) => {
+      setApplications(response.data.applications)
+      console.info(response)
+      
     })
+    .then(() => {console.info(applications)})
+    .finally(() => {setIsLoading(false)})
   }, [])
 
   return (
     <>
       <div className="flex flex-wrap">
         <div className="w-full px-4">
-          {applications 
+          {isLoading 
           ? "loading"
-          : <CardSettings apps={applications}/>
+          : <CardSettings/>
           }
           
         </div>
