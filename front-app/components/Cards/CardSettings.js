@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {useApplicationsStore} from "../../stores/applicationsStore";
 import {IconButton} from "@mui/material";
 import Button from '@mui/material/Button';
@@ -8,6 +8,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { setApplicationCategory, setApplicationSynonim } from "services/services";
 
 // components
 
@@ -22,6 +23,9 @@ export default function CardSettings(color="light") {
   }, [])
 
   const [open, setOpen] = React.useState(false);
+  const [synonim, setSynonim] = useState('')
+  const [category, setCategory] = useState('')
+  const [id, setId] = useState('')
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,6 +34,8 @@ export default function CardSettings(color="light") {
   const handleClose = () => {
     setOpen(false);
   };
+
+  
 
   return (
     <>
@@ -107,6 +113,7 @@ export default function CardSettings(color="light") {
                             </td>
                             <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 w-1/12 text-xs whitespace-nowrap p-4 text-right">
                             <IconButton onClick={() => {
+                                            setId(app.id)
                                             handleClickOpen()
                                           }
                                         }>
@@ -125,6 +132,8 @@ export default function CardSettings(color="light") {
         PaperProps={{
           component: 'form',
           onSubmit: (event) => {
+            setApplicationSynonim(id, synonim)
+            setApplicationCategory(id, category)
             handleClose();
           },
         }}
@@ -140,6 +149,7 @@ export default function CardSettings(color="light") {
             type="text"
             fullWidth
             variant="standard"
+            onChange={(e) => setSynonim(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -149,11 +159,16 @@ export default function CardSettings(color="light") {
             type="text"
             fullWidth
             variant="standard"
+            onChange={(e) => setCategory(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отменить</Button>
-          <Button>Сохранить</Button>
+          <Button onClick={() => {
+            setApplicationSynonim(id, synonim)
+            setApplicationCategory(id, category)
+            handleClose();
+          }}>Сохранить</Button>
         </DialogActions>
       </Dialog>
     </>
