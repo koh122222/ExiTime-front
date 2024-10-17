@@ -134,6 +134,31 @@ export default function Sidebar() {
                   </a>
                 </Link>
               </li>
+
+              <li className="items-center">
+                <Link legacyBehavior href="/admin/settings">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/settings") !== -1
+                        ? "text-lightBlue-500 hover:text-lightBlue-600"
+                        : "text-blueGray-700 hover:text-blueGray-500")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-table mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/settings") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>{" "}
+                    Настройка приложений
+                  </a>
+                </Link>
+              </li>
+
             </ul>
           </div>
         </div>
